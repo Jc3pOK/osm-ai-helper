@@ -90,14 +90,12 @@ def ensure_authorized_session(client_id, client_secret):
 @contextmanager
 def open_changeset(
     osm_session,
-    url: str = "https://github.com/mozilla-ai/osm-ai-helper",
     created_by: str = "https://github.com/mozilla-ai/osm-ai-helper",
     comment: str = "Add Swimming Pools",
     source: str = "aerial imagery",
 ):
     root = ET.Element("osm")
     element = ET.SubElement(root, "changeset")
-    ET.SubElement(element, "tag", {"k": "url", "v": url})
     ET.SubElement(element, "tag", {"k": "import", "v": "yes"})
     ET.SubElement(element, "tag", {"k": "created_by", "v": created_by})
     ET.SubElement(element, "tag", {"k": "comment", "v": comment})
