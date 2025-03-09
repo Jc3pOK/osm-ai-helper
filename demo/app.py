@@ -123,7 +123,9 @@ st.title("OpenStreetMap AI Helper")
 
 st.markdown(
     """
-This demo uses [mozilla-ai/swimming-pool-detector](https://huggingface.co/mozilla-ai/swimming-pool-detector).
+This demo was created with the repo [mozilla-ai/osm-ai-helper](https://github.com/mozilla-ai/osm-ai-helper).
+
+It uses the model [mozilla-ai/swimming-pool-detector](https://huggingface.co/mozilla-ai/swimming-pool-detector).
 
 You can check the [Create Dataset](https://colab.research.google.com/github/mozilla-ai//osm-ai-helper/blob/main/demo/create_dataset.ipyn)
 and [Finetune Model](https://colab.research.google.com/github/mozilla-ai//osm-ai-helper/blob/main/demo/finetune_model.ipynb) notebooks to learn how to train your own model.
