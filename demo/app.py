@@ -93,7 +93,9 @@ def upload_results(output_path):
     st.divider()
     st.header("Upload all polygons in `keep`")
 
-    st.markdown("The results will be uploaded using our OpenStreetMap account.")
+    st.markdown(
+        "The results will be uploaded using the [osm-ai-helper](https://www.openstreetmap.org/user/osm-ai-helper) profile."
+    )
     st.markdown(
         "You can check the [Colab Notebook](ttps://colab.research.google.com/github/mozilla-ai/osm-ai-helper/blob/main/demo/run_inference.ipynb)"
         " and the [Authorization Guide](https://mozilla-ai.github.io/osm-ai-helper/authorization)"
