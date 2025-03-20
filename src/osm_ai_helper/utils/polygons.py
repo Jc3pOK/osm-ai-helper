@@ -119,7 +119,7 @@ def paint_polygon_evaluation(
     false_alamars: List[Polygon],
     missed: List[Polygon],
 ):
-    painted_output = np.zeros((*image.size, 3))
+    painted_output = np.zeros((image.size[1], image.size[1], 3))
     for p in found:
         paint_polygon(p, painted_output, (0, 255, 0))
     for p in false_alamars:
