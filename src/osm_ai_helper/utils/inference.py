@@ -107,10 +107,10 @@ def download_stacked_image_and_mask(
     right, bottom = lat_lon_to_tile_col_row(south, east, zoom)
 
     stacked_image = np.zeros(
-        ((right - left) * TILE_SIZE, (bottom - top) * TILE_SIZE, 3), dtype=np.uint8
+        ((bottom - top) * TILE_SIZE, (right - left) * TILE_SIZE, 3), dtype=np.uint8
     )
     stacked_mask = np.zeros(
-        ((right - left) * TILE_SIZE, (bottom - top) * TILE_SIZE), dtype=np.uint8
+        ((bottom - top) * TILE_SIZE, (right - left) * TILE_SIZE), dtype=np.uint8
     )
 
     with ThreadPoolExecutor() as executor:
