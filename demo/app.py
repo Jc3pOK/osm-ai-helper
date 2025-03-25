@@ -1,3 +1,5 @@
+import json
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from shutil import move
 
@@ -98,13 +100,17 @@ def download_results(output_path):
         "\nYou can then import the file in [any of the supported editors](https://wiki.openstreetmap.org/wiki/OsmChange#Editors) format."
     )
 
-    changeset = convert_polygons(
-        results_dir=output_path / "keep",
+    lon_lat_polygons = [
+        json.loads(result.read_text())
+        for result in (output_path / "keep").glob("*.json")
+    ]
+    osmchange = convert_polygons(
+        lon_lat_polygons=lon_lat_polygons,
         tags={"leisure": "swimming_pool", "access": "private", "location": "outdoor"},
     )
     st.download_button(
         label="Download all polygons in `keep`",
-        data=changeset,
+        data=ET.tostring(osmchange, "utf-8"),
         file_name="exported_results.osc",
         mime="type/xml",
     )
