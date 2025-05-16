@@ -1,5 +1,7 @@
-import json
 from dotenv import load_dotenv; load_dotenv()
+import os
+print('MAPBOX_TOKEN:', os.environ.get('MAPBOX_TOKEN'))
+import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from shutil import move
