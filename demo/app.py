@@ -46,18 +46,19 @@ def show_map():
 @st.fragment
 def inference(lat_lon):
     with st.spinner("Downloading model..."):
+        # TODO: Replace with a model trained to detect golf course features (teeboxes, greens, bunkers, fairways, etc.)
         hf_hub_download(
-            "mozilla-ai/swimming-pool-detector",
+            "mozilla-ai/swimming-pool-detector",  # Replace this with your golf feature detector model
             filename="model.pt",
             repo_type="model",
             local_dir="models",
-        )
+        )  # NOTE: This is a placeholder. You must train or provide a golf feature detection model for accurate results.
     with st.spinner("Downloading image and Running inference..."):
         output_path, existing, new, missed = run_inference(
             yolo_model_file="models/model.pt",
             output_dir="/tmp/results",
             lat_lon=lat_lon,
-            margin=2,
+            margin=2,  # 2km x 2km area
             save_full_images=False,
             batch_size=64,
         )
@@ -104,9 +105,10 @@ def download_results(output_path):
         json.loads(result.read_text())
         for result in (output_path / "keep").glob("*.json")
     ]
+    # TODO: Update tags to match the detected feature type, e.g., {"golf": "green"}, {"golf": "bunker"}, etc.
     osmchange = convert_polygons(
         lon_lat_polygons=lon_lat_polygons,
-        tags={"leisure": "swimming_pool", "access": "private", "location": "outdoor"},
+        tags={"golf": "feature"},  # Replace "feature" with the specific type if known
     )
     st.download_button(
         label="Download all polygons in `keep`",
@@ -116,13 +118,14 @@ def download_results(output_path):
     )
 
 
-st.title("OpenStreetMap AI Helper")
+st.title("OpenStreetMap Golf Course Feature Helper")
 
 st.markdown(
     """
 This demo was created with the repo [mozilla-ai/osm-ai-helper](https://github.com/mozilla-ai/osm-ai-helper).
 
-It uses the model [mozilla-ai/swimming-pool-detector](https://huggingface.co/mozilla-ai/swimming-pool-detector).
+It is configured to help you find golf course features (teeboxes, greens, fairways, sand traps, etc.) in satellite imagery.\
+**NOTE:** You must provide or train a model for golf course features for accurate results.\
 
 You can check the [Create Dataset](https://colab.research.google.com/github/mozilla-ai//osm-ai-helper/blob/main/demo/create_dataset.ipyn)
 and [Finetune Model](https://colab.research.google.com/github/mozilla-ai//osm-ai-helper/blob/main/demo/finetune_model.ipynb) notebooks to learn how to train your own model.
@@ -131,14 +134,13 @@ and [Finetune Model](https://colab.research.google.com/github/mozilla-ai//osm-ai
 
 st.divider()
 
-st.subheader("Click on the map to select a latitude and longitude.")
+st.subheader("Search for a golf course, then paste its latitude and longitude.")
 
 st.markdown(
     """
-The model will try to find swimming pools around this location.
+The model will try to find **golf course features** (teeboxes, greens, fairways, sand traps, etc.) in a 2km x 2km area centered on the provided coordinates.\
 
-Note that this model was trained with data from [Galicia](https://nominatim.openstreetmap.org/ui/details.html?osmtype=R&osmid=349036&class=boundary),
-so it might fail to generalize to significantly different places.
+**Note:** The current model is a placeholder. For accurate results, train or provide a model for golf course features.
 """
 )
 
@@ -152,7 +154,7 @@ if st.button("Run Inference") and lat_lon:
         lat_lon=(float(lat.strip()), float(lon.strip()))
     )
 
-    st.info(f"Found {len(existing)} swimming pools already in OpenStreetMaps.")
+    st.info(f"Found {len(existing)} golf course features already in OpenStreetMap.")
 
     if new:
         st.divider()
@@ -161,7 +163,7 @@ if st.button("Run Inference") and lat_lon:
             "Every `new` swimming pool will be displayed at the center of the image in `yellow`."
         )
         st.markdown(
-            "Swimming pools in other colors are those already existing in OpenStreetMap and they just "
+            "Golf course features in other colors are those already existing in OpenStreetMap and they just "
             "indicate whether the model has found them (`green`) or missed them (`red`)."
         )
         for new in Path(output_path).glob("*.json"):
