@@ -1,4 +1,5 @@
 import json
+from dotenv import load_dotenv; load_dotenv()
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from shutil import move
